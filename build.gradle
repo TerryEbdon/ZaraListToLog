@@ -1,0 +1,90 @@
+plugins {
+  id 'groovy'
+  id 'application' //  Support building a CLI application in Java.
+  id 'jacoco' // Instrument build & add coverage reporting tasks (jacocoTestReport)
+  id 'codenarc'
+}
+
+
+codenarcMain {
+  configFile = file("$rootDir/config/codenarc/codenarc.groovy")
+  ignoreFailures = true
+}
+
+codenarcTest {
+  configFile = file("$rootDir/config/codenarc/codenarc.groovy")
+  ignoreFailures = true
+}
+
+distributions {
+  main {
+    contents {
+      from 'src/main/resources'
+    }
+  }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+  implementation 'org.apache.groovy:groovy-all:4.0.28'
+
+  // This dependency is used by the application.
+  implementation 'com.google.guava:guava:32.0.1-jre'
+
+  implementation 'org.apache.logging.log4j:log4j-api:2.12.4'
+  implementation 'org.apache.logging.log4j:log4j-core:2.12.4'
+  implementation 'org.apache.logging.log4j:log4j-jcl:2.4'
+
+  testImplementation("org.junit.jupiter:junit-jupiter-api:5.1.0")
+  testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.1.0")
+  testCompileOnly("junit:junit:4.12")
+  testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.1.0")
+
+  codenarc('org.codenarc:CodeNarc:3.6.0-groovy-4.0')
+  codenarc('org.apache.groovy:groovy-all:4.0.28') // Required for Java 17
+}
+
+run {
+  standardInput = System.in
+}
+
+// Apply a specific Java toolchain to ease working on different environments.
+java {
+  toolchain {
+      languageVersion = JavaLanguageVersion.of(17)
+  }
+}
+
+def builtDate = new Date()
+project.version = 'v0.0.1'
+jar {
+  manifest {
+    attributes 'Implementation-Title': project.name,
+      'Implementation-Version': project.version,
+      'Built-By': System.getProperty('user.name'),
+      'Built-Date': builtDate,
+      'Built-JDK': System.getProperty('java.version'),
+      'Created-By': 'Gradle'
+    }
+}
+
+application {
+  mainClass = 'net.ebdon.zaralisttolog.ZaraListToLog'
+}
+
+test {
+  useJUnitPlatform()
+}
+
+startScripts {
+  doLast {
+    def buildNum = String.format '%ty%<tm%<td%<tH%<tM', builtDate
+    windowsScript.setText(windowsScript.getText().
+      replace(
+        '@rem Execute ZaraListToLog', 
+        "@echo Starting ${project.name} ${project.version} build $buildNum"))
+  }
+}
