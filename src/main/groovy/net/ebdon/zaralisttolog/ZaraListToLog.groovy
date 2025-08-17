@@ -38,24 +38,30 @@ class ZaraListToLog extends UiBase {
   void run() {
     reportVersion()
     selectPlayList()
-    selectShowStart()
-    reportFiles()
-
-    logFile = new File(logFileName )
-    if (logFile.exists()) {
-      logger.error 'Log file already exists'
-    } else {
-      createLogHeader()
-
-      // playlistFile = new File(playListName)
-      if (playlistFile.exists()) {
-        processPlayList()
-        trackSummary()
-      } else {
-        log.error 'Playlist does not exist'
+    if (logFileName?.size()) {
+      selectShowStart()
+      if (showStart?.size()) {
+        reportFiles()
+        logFile = new File(logFileName )
+        if (logFile.exists()) {
+          logger.error 'Log file already exists'
+        } else {
+          generateZaraLog()
+        }
+      outln '\n'
       }
     }
-    outln '\n'
+  }
+
+  void generateZaraLog() {
+    createLogHeader()
+
+    if (playlistFile.exists()) {
+      processPlayList()
+      trackSummary()
+    } else {
+      logger.error 'Playlist does not exist'
+    }
   }
 
   void selectPlayList() {
@@ -72,8 +78,8 @@ class ZaraListToLog extends UiBase {
 
     playListDialogue.showOpenDialog()
     logger.trace "Selected file: ${playListDialogue.selectedFile}"
-    playlistFile = playListDialogue?.selectedFile.absoluteFile
-    if ( playlistFile.exists() ) {
+    playlistFile = playListDialogue.selectedFile?.absoluteFile
+    if ( playlistFile?.exists() ) {
       logFileName = playlistFile.absolutePath - '.lst' + '.log'
     }
   }
@@ -87,9 +93,11 @@ class ZaraListToLog extends UiBase {
     }
 
     showStart = popup('Start date and time for the show')
-
-    timestamp      = Timestamp.valueOf(showStart)
-    startTimeStamp = timestamp.clone()
+    logger.info "showStart is >${showStart}<"
+    if (showStart?.size()) {
+      timestamp      = Timestamp.valueOf(showStart)
+      startTimeStamp = timestamp.clone()
+    }
   }
 
   void trackSummary() {
