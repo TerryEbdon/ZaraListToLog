@@ -85,7 +85,7 @@ class ZaraListToLog extends UiBase {
   }
 
   void selectShowStart() {
-    Closure popup = { String prompt
+    Closure popup = { final String prompt ->
       JFrame jframe = new JFrame()
       String answer = JOptionPane.showInputDialog(jframe, prompt, showStart)
       jframe.dispose()
