@@ -58,6 +58,7 @@ People *love* thorough bug reports. I'm not even kidding.
 ## Use a Consistent Coding Style
 
 - Two spaces for indentation
+- Line wrap at column 80
 - English is the preferred language for all comments, issues, commits, pull
   requests and other communications.
 - Prefer British or Irish spelling and grammar conventions in all comments, issues,
