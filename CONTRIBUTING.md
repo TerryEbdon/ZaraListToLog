@@ -65,7 +65,6 @@ People *love* thorough bug reports. I'm not even kidding.
   comment spam.)
 - American English may appear in code where required by APIs or libraries.
 
-
 ## References
 
 This document was adapted from @briandk's [basic template]
