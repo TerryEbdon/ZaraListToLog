@@ -1,6 +1,6 @@
 # Project Overview
 
-This project is a Groovy command-line application takes a ZaraRadio playlist and
+This project is a Groovy command-line application that takes a ZaraRadio playlist and
 turns it into a ZaraRadio log file. The project is built using the most recent
 stable version of Gradle.
 
