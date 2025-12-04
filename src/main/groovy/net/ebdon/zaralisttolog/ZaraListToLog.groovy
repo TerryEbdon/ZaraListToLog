@@ -27,7 +27,7 @@ class ZaraListToLog extends UiBase {
   int totalOverlapMs     = 0
 
   File logFile
-  File playlistFile  
+  File playlistFile
   String showStart = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
   Timestamp timestamp      = Timestamp.valueOf(showStart)
   Timestamp startTimeStamp = timestamp.clone()
