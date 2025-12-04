@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileFilter
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import javax.swing.JFrame
+import java.text.SimpleDateFormat
 
 @groovy.util.logging.Log4j2('logger')
 class ZaraListToLog extends UiBase {
@@ -26,10 +27,11 @@ class ZaraListToLog extends UiBase {
   int totalOverlapMs     = 0
 
   File logFile
-  File playlistFile
-  String showStart         = '2024-05-22 09:00:00'
+  File playlistFile  
+  String showStart = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss').format(new Date())
   Timestamp timestamp      = Timestamp.valueOf(showStart)
   Timestamp startTimeStamp = timestamp.clone()
+  String logHeaderDate
 
   static void main(String[] args) {
     new ZaraListToLog().run()
@@ -46,9 +48,12 @@ class ZaraListToLog extends UiBase {
         if (logFile.exists()) {
           logger.error 'Log file already exists'
         } else {
+          logger.debug "Creating ${logFileName}"
           generateZaraLog()
         }
-      outln '\n'
+        outln '\n'
+      } else {
+        logger.error 'No show start time entered'
       }
     }
   }
@@ -95,9 +100,28 @@ class ZaraListToLog extends UiBase {
     showStart = popup('Start date and time for the show')
     logger.info "showStart is >${showStart}<"
     if (showStart?.size()) {
+      extractLogDate()
       timestamp      = Timestamp.valueOf(showStart)
       startTimeStamp = timestamp.clone()
+    } else {
+      logger.error 'No show start entered'
     }
+  }
+
+  /**
+  * Parses the showStart string (expected format: 'yyyy-MM-dd HH:mm:ss') and
+  * formats it as a ZaraRadio log header date. 
+  *
+  * Example:
+  * showStart = '2024-05-22 19:30:00' logHeaderDate = 'Wednesday 22 May 2024'
+  *
+  * @throws ParseException if showStart cannot be parsed to a Date
+  */
+  void extractLogDate() {
+    SimpleDateFormat inputFormat = new SimpleDateFormat('yyyy-MM-dd HH:mm:ss')
+    Date date = inputFormat.parse(showStart)
+    SimpleDateFormat outputFormat = new SimpleDateFormat('EEEE dd MMMM yyyy')
+    logHeaderDate = outputFormat.format(date)
   }
 
   void trackSummary() {
@@ -136,6 +160,7 @@ class ZaraListToLog extends UiBase {
   }
 
   void processPlayList() {
+    logger.debug "Processing ${playlistFile.absolutePath}"
     playlistFile.eachLine { line ->
       if ( playlistFileLineNo++ != 0 ) {
         List<String> fields = line.split( '\t' )
@@ -179,7 +204,7 @@ class ZaraListToLog extends UiBase {
   void createLogHeader() {
     logFile << 'LOG FILE\n'
     logFile << '========\n\n'
-    logFile << 'Wednesday 22 May 2024\n\n'
+    logFile << "${logHeaderDate}\n\n"
     logFile << 'TIME    \tACTION\n'
     logFile << '--------\t------\n'
   }
@@ -190,8 +215,8 @@ class ZaraListToLog extends UiBase {
     final String version     = myPackage.implementationVersion
 
     final String format      = '│ %s %s │'
-    final String versionInfo = String.format format, title, version
-    logger.debug versionInfo[1..-1]
+    final String versionInfo = String.format( format, title, version )
+    logger.debug "versionInfo: ${versionInfo[1..-1]}"
 
     final Integer hLineLen      = versionInfo.size() - versionBorderPadding
     final String  hLine         = '─' * hLineLen
