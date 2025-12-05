@@ -6,6 +6,7 @@ import javax.swing.filechooser.FileFilter
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
 import javax.swing.JFrame
+import java.text.SimpleDateFormat
 
 @groovy.util.logging.Log4j2('logger')
 class ZaraListToLog extends UiBase {
@@ -27,29 +28,72 @@ class ZaraListToLog extends UiBase {
 
   File logFile
   File playlistFile
-  String showStart         = '2024-05-22 09:00:00'
-  Timestamp timestamp      = Timestamp.valueOf(showStart)
-  Timestamp startTimeStamp = timestamp.clone()
+  String logDateFormat   = 'EEEE dd MMMM yyyy'
+  String showStartFormat = 'yyyy-MM-dd HH:mm:ss'
+  Locale zaraLocale      = Locale.UK
+
+  SimpleDateFormat showStartInputFormat
+  String showStart
+  Timestamp timestamp
+  Timestamp startTimeStamp
+  String logHeaderDate
 
   static void main(String[] args) {
     new ZaraListToLog().run()
   }
 
+  /**
+  * Initialise the showStart input formatter and set the default
+  * showStart value to the current date/time.
+  */
+  ZaraListToLog() {
+    showStartInputFormat = new SimpleDateFormat(showStartFormat, zaraLocale)
+    showStart = showStartInputFormat.format(new Date())
+  }
+
+  /**
+  * Initialise timestamp-related fields from the current showStart String.
+  *
+  * The method converts showStart into a java.sql.Timestamp and clones it to
+  * produce startTimeStamp. The value used is logged.
+  *
+  * @throws IllegalArgumentException if showStart is not a valid timestamp
+  *         string recognised by Timestamp.valueOf
+  */
+  void initTimestamps() {
+    logger.debug "Default showStart: >${showStart}<"
+    timestamp      = Timestamp.valueOf(showStart)
+    startTimeStamp = timestamp.clone()
+  }
+
   void run() {
-    reportVersion()
-    selectPlayList()
-    if (logFileName?.size()) {
-      selectShowStart()
-      if (showStart?.size()) {
-        reportFiles()
-        logFile = new File(logFileName )
-        if (logFile.exists()) {
-          logger.error 'Log file already exists'
-        } else {
-          generateZaraLog()
+    try {
+      reportVersion()
+      initTimestamps()
+      selectPlayList()
+      if (logFileName?.size()) {
+        try {
+          selectShowStart()
+          if (showStart?.size()) {
+            reportFiles()
+            logFile = new File(logFileName )
+            if (logFile.exists()) {
+              logger.error 'Log file already exists'
+            } else {
+              logger.debug "Creating ${logFileName}"
+              generateZaraLog()
+            }
+            outln '\n'
+          } else {
+            logger.info 'Can\'t create log with no show start date/time'
+          }
+        } catch (java.text.ParseException ex) {
+          logger.error ex.message
+          logger.error 'Valid show start date/time required to create a log file'
         }
-      outln '\n'
       }
+    } catch (Exception ex) {
+      logger.error ex.message
     }
   }
 
@@ -77,10 +121,13 @@ class ZaraListToLog extends UiBase {
       )
 
     playListDialogue.showOpenDialog()
-    logger.trace "Selected file: ${playListDialogue.selectedFile}"
+    logger.debug "Selected file: ${playListDialogue.selectedFile}"
     playlistFile = playListDialogue.selectedFile?.absoluteFile
     if ( playlistFile?.exists() ) {
       logFileName = playlistFile.absolutePath - '.lst' + '.log'
+      logger.debug "logFileName: $logFileName"
+    } else {
+      logger.error "No playlist selected"
     }
   }
 
@@ -95,9 +142,28 @@ class ZaraListToLog extends UiBase {
     showStart = popup('Start date and time for the show')
     logger.info "showStart is >${showStart}<"
     if (showStart?.size()) {
+      extractLogDate()
       timestamp      = Timestamp.valueOf(showStart)
       startTimeStamp = timestamp.clone()
+    } else {
+      logger.error 'No show start date/time entered'
     }
+  }
+
+  /**
+  * Parse the showStart string and format it as a ZaraRadio log header date.
+  *
+  * Example:
+  *  showStart = '2024-05-22 19:30:00'
+  *  logHeaderDate = 'Wednesday 22 May 2024'
+  *
+  * @throws ParseException if showStart cannot be parsed to a Date
+  */
+  void extractLogDate() {
+    Date date = showStartInputFormat.parse(showStart)
+    SimpleDateFormat outputFormat =
+      new SimpleDateFormat(logDateFormat, zaraLocale)
+    logHeaderDate = outputFormat.format(date)
   }
 
   void trackSummary() {
@@ -136,6 +202,7 @@ class ZaraListToLog extends UiBase {
   }
 
   void processPlayList() {
+    logger.debug "Processing ${playlistFile.absolutePath}"
     playlistFile.eachLine { line ->
       if ( playlistFileLineNo++ != 0 ) {
         List<String> fields = line.split( '\t' )
@@ -179,7 +246,7 @@ class ZaraListToLog extends UiBase {
   void createLogHeader() {
     logFile << 'LOG FILE\n'
     logFile << '========\n\n'
-    logFile << 'Wednesday 22 May 2024\n\n'
+    logFile << "${logHeaderDate}\n\n"
     logFile << 'TIME    \tACTION\n'
     logFile << '--------\t------\n'
   }
@@ -190,8 +257,8 @@ class ZaraListToLog extends UiBase {
     final String version     = myPackage.implementationVersion
 
     final String format      = '│ %s %s │'
-    final String versionInfo = String.format format, title, version
-    logger.debug versionInfo[1..-1]
+    final String versionInfo = String.format( format, title, version )
+    logger.debug "versionInfo: ${versionInfo[1..-1]}"
 
     final Integer hLineLen      = versionInfo.size() - versionBorderPadding
     final String  hLine         = '─' * hLineLen
