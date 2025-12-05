@@ -59,7 +59,7 @@ java {
 }
 
 def builtDate = new Date()
-project.version = 'v0.0.1'
+project.version = 'v1.0.0'
 jar {
   manifest {
     attributes 'Implementation-Title': project.name,
