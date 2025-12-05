@@ -43,23 +43,23 @@ class ZaraListToLog extends UiBase {
   }
 
   /**
-   * Initialise the showStart input formatter and set the default
-   * showStart value to the current date/time.
-   */
+  * Initialise the showStart input formatter and set the default
+  * showStart value to the current date/time.
+  */
   ZaraListToLog() {
     showStartInputFormat = new SimpleDateFormat(showStartFormat, zaraLocale)
     showStart = showStartInputFormat.format(new Date())
   }
 
   /**
-   * Initialise timestamp-related fields from the current showStart String.
-   *
-   * The method converts showStart into a java.sql.Timestamp and clones it to
-   * produce startTimeStamp. The value used is logged.
-   *
-   * @throws IllegalArgumentException if showStart is not a valid timestamp
-   *         string recognised by Timestamp.valueOf
-   */
+  * Initialise timestamp-related fields from the current showStart String.
+  *
+  * The method converts showStart into a java.sql.Timestamp and clones it to
+  * produce startTimeStamp. The value used is logged.
+  *
+  * @throws IllegalArgumentException if showStart is not a valid timestamp
+  *         string recognised by Timestamp.valueOf
+  */
   void initTimestamps() {
     logger.debug "Default showStart: >${showStart}<"
     timestamp      = Timestamp.valueOf(showStart)
