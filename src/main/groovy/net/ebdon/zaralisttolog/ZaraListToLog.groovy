@@ -10,10 +10,11 @@ import java.text.SimpleDateFormat
 
 @groovy.util.logging.Log4j2('logger')
 class ZaraListToLog extends UiBase {
-  final int numPlaylistHeaderLines   = 1
-  final int expectNumFieldsInLogLine = 2
-  final int versionBorderPadding     = 2
-  final String unplayableLength      = '-1'
+  final int numPlaylistHeaderLines    = 1
+  final int expectNumFieldsInLogLine  = 2
+  final int versionBorderPadding      = 2
+  final int numBlankLinesAfterSummary = 2
+  final String unplayableLength       = '-1'
 
   final String overlapRegex  = /.*~[0-9]+([\.][0-9]*){0,1}\s*\.(wav|mp3|ogg|wma)/
   final String fileTypeRegex = /\s|.mp3|.ogg|.wma|.wav/
@@ -83,7 +84,7 @@ class ZaraListToLog extends UiBase {
               logger.debug "Creating ${logFileName}"
               generateZaraLog()
             }
-            outln '\n'
+            newLine numBlankLinesAfterSummary
           } else {
             logger.info 'Can\'t create log with no show start date/time'
           }
@@ -272,9 +273,12 @@ class ZaraListToLog extends UiBase {
     newLine()
   }
 
-  void newLine() {
-    out '\n'
+  void newLine(int count = 1) {
+    count.times {
+      out '\n'
+    }
   }
+
   void add( final String durationMs, long overlap) {
     int milliseconds = durationMs.toLong() - overlap
     Calendar cal = Calendar.instance
