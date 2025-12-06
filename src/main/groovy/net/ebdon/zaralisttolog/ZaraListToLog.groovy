@@ -83,7 +83,7 @@ class ZaraListToLog extends UiBase {
               logger.debug "Creating ${logFileName}"
               generateZaraLog()
             }
-            outln '\n'
+            newLine()
           } else {
             logger.info 'Can\'t create log with no show start date/time'
           }
@@ -275,6 +275,7 @@ class ZaraListToLog extends UiBase {
   void newLine() {
     out '\n'
   }
+
   void add( final String durationMs, long overlap) {
     int milliseconds = durationMs.toLong() - overlap
     Calendar cal = Calendar.instance
