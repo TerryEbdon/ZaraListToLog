@@ -13,7 +13,7 @@ class ZaraListToLog extends UiBase {
   final int numPlaylistHeaderLines    = 1
   final int expectNumFieldsInLogLine  = 2
   final int versionBorderPadding      = 2
-  final int numBlankLinesAfterSummary = 1
+  final int numBlankLinesAfterSummary = 2
   final String unplayableLength       = '-1'
 
   final String overlapRegex  = /.*~[0-9]+([\.][0-9]*){0,1}\s*\.(wav|mp3|ogg|wma)/
