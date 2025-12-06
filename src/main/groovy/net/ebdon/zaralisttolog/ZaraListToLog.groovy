@@ -83,7 +83,7 @@ class ZaraListToLog extends UiBase {
               logger.debug "Creating ${logFileName}"
               generateZaraLog()
             }
-            newLine()
+            newLine 2
           } else {
             logger.info 'Can\'t create log with no show start date/time'
           }
@@ -272,8 +272,10 @@ class ZaraListToLog extends UiBase {
     newLine()
   }
 
-  void newLine() {
-    out '\n'
+  void newLine(int count = 1) {
+    1.upto(count) {
+      out '\n'
+    }
   }
 
   void add( final String durationMs, long overlap) {
