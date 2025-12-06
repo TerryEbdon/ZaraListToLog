@@ -8,6 +8,18 @@ import javax.swing.JOptionPane
 import javax.swing.JFrame
 import java.text.SimpleDateFormat
 
+/**
+ * ZaraListToLog takes a ZaraRadio playlist and turns it into a ZaraRadio log
+ * file. ZaraListToLog will create the log for any specified date and start time.
+ * This is useful to:
+ * <ul>
+ *   <li> Create a log file for a date when a radio show is to be repeated. e.g.
+ *        when you're playing a recorded show but still want the logs.</li>
+ *   <li> Recreate a log file that has been lost or deleted.</li>
+ *   <li> Create a log for a show that had logging disabled. (ZaraRadio doesn't
+ *        log by default.)</li>
+ * </ul>
+ */
 @groovy.util.logging.Log4j2('logger')
 class ZaraListToLog extends UiBase {
   final int numPlaylistHeaderLines    = 1
