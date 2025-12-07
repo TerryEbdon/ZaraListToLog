@@ -57,7 +57,7 @@ class ZaraListToLogTest extends GroovyTestCase {
   }
 
   void testOverlapMillisecondsParsesOverlapSeconds() {
-    List<String> fields = ['123', 'C:\\music\\track~1.5.mp3']
+    final List<String> fields = ['123', 'C:\\music\\track~1.5.mp3']
     long overlap = app.overlapMilliseconds(fields)
     assert overlap == 1500 &&
       app.overlappedTracks == 1 &&
@@ -73,8 +73,8 @@ class ZaraListToLogTest extends GroovyTestCase {
       timestamp          = Timestamp.valueOf(endPlayTimeStamp)
 
       long expectNumPlayed = playlistFileLineNo - numHdrLines - unplayableCount
-      assert app.playedTrackCount == expectNumPlayed
-      assert app.totalRuntime == '30 min, 0 sec'
+      assert playedTrackCount == expectNumPlayed
+      assert totalRuntime == '30 min, 0 sec'
     }
   }
 }
