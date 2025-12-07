@@ -140,7 +140,7 @@ class ZaraListToLog extends UiBase {
       logFileName = playlistFile.absolutePath - '.lst' + '.log'
       logger.debug "logFileName: $logFileName"
     } else {
-      logger.error "No playlist selected"
+      logger.error 'No playlist selected'
     }
   }
 
