@@ -12,7 +12,7 @@ import java.sql.Timestamp
  * @author Terry Ebdon
  * @version 1.0
  * @since 1.0
- * @see net.ebdon.ZaraListToLog
+ * @see net.ebdon.zaralisttolog.ZaraListToLog
  */
 class ZaraListToLogTest extends GroovyTestCase {
   private ZaraListToLog app
