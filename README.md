@@ -1,3 +1,5 @@
+[![Dependency review](https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml)
+
 # ZaraListToLog
 
 ZaraListToLog takes a ZaraRadio playlist and turns it into a ZaraRadio log file.
