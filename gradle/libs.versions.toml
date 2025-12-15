@@ -3,7 +3,7 @@
 
 [versions]
 groovy-all = "3.0.19"
-guava = "32.1.3-jre"
+guava = "33.5.0-jre"
 junit = "4.13.2"
 spock-core = "2.2-groovy-3.0"
 
