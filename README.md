@@ -1,10 +1,13 @@
-[![Dependency review][dep-badge]][dep-link] [![CodeQL][codeql-badge]][codeql-link]
+[![Dependency review][dep-badge]][dep-link] [![CodeQL][codeql-badge]][codeql-link] [![Dependabot Updates][dependabot-badge]][dependabot-link]
 
 [dep-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml/badge.svg
 [dep-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml
 
 [codeql-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/github-code-scanning/codeql/badge.svg
 [codeql-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/github-code-scanning/codeql
+
+[dependabot-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependabot/dependabot-updates/badge.svg
+[dependabot-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependabot/dependabot-updates
 
 # ZaraListToLog
 
@@ -13,7 +16,7 @@ ZaraListToLog can create the log for any date and start time.
 This is useful to:
 
 - Create a log file for a date when a radio show is to be repeated. e.g. when
-  you're playing a recorded show but still want the logs. 
+  you're playing a recorded show but still want the logs.
 - Recreate a log file that has been lost or deleted.
 - Create a log for a show that had logging disabled. (ZaraRadio doesn't log by
   default, and its configuration isn't always persistent.)
@@ -35,7 +38,7 @@ requirement.
 
 ### Microsoft Windows
 
-ZaraRadio is a Windows only application. It writes Windows file paths ino its
+ZaraRadio is a Windows only application. It writes Windows file paths into its
 playlists and log files. ZaraListToLog is tested on Windows 10 and Windows 11,
 with 64-bit Intel processors. While it should be possible to run the app on
 Windows 7, on 32-bit machines, and with ARM processors, I don't plan to test on
