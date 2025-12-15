@@ -16,7 +16,7 @@ ZaraListToLog can create the log for any date and start time.
 This is useful to:
 
 - Create a log file for a date when a radio show is to be repeated. e.g. when
-  you're playing a recorded show but still want the logs. 
+  you're playing a recorded show but still want the logs.
 - Recreate a log file that has been lost or deleted.
 - Create a log for a show that had logging disabled. (ZaraRadio doesn't log by
   default, and its configuration isn't always persistent.)
