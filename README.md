@@ -38,7 +38,7 @@ requirement.
 
 ### Microsoft Windows
 
-ZaraRadio is a Windows only application. It writes Windows file paths ino its
+ZaraRadio is a Windows only application. It writes Windows file paths into its
 playlists and log files. ZaraListToLog is tested on Windows 10 and Windows 11,
 with 64-bit Intel processors. While it should be possible to run the app on
 Windows 7, on 32-bit machines, and with ARM processors, I don't plan to test on
