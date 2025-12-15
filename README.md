@@ -1,6 +1,5 @@
 [![Dependency review][dep-badge]][dep-link] [![CodeQL][codeql-badge]][codeql-link]
 
-
 [dep-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml/badge.svg
 [dep-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml
 
