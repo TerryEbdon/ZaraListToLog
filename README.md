@@ -1,4 +1,10 @@
-[![Dependency review](https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml/badge.svg)](https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml)
+[![Dependency review][dep-badge]][dep-link] [![CodeQL][codeql-badge]][codeql-link]
+
+[dep-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml/badge.svg
+[dep-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/dependency-review.yml
+
+[codeql-badge]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/github-code-scanning/codeql/badge.svg
+[codeql-link]: https://github.com/TerryEbdon/ZaraListToLog/actions/workflows/github-code-scanning/codeql
 
 # ZaraListToLog
 
