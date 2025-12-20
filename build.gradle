@@ -57,8 +57,11 @@ java {
   }
 }
 
-def builtDate = new Date()
-project.version = 'v1.0.0'
+def builtDate         = new Date()
+project.version       = 'v1.0.0'
+String projectVersion = project.version
+String projectName    = project.name
+
 jar {
   manifest {
     attributes 'Implementation-Title': project.name,
@@ -84,6 +87,6 @@ startScripts {
     windowsScript.setText(windowsScript.getText().
       replace(
         '@rem Execute ZaraListToLog', 
-        "@echo Starting ${project.name} ${project.version} build $buildNum"))
+        "@echo Starting ${projectName} ${projectVersion} build $buildNum"))
   }
 }
